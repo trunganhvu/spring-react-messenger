@@ -1,0 +1,100 @@
+import { Box } from "@mui/material"
+import React, { useContext, useEffect, useState } from "react"
+import { AlertAction, AlertContext } from "../../context/AlertContext"
+import { CreateMessageComponent } from "../messages/CreateMessageComponent"
+import { WebSocketContext } from "../../context/WebsocketContext"
+import { DisplayMessagesComponent } from "../messages/DisplayMessagesComponent"
+import { NoDataComponent } from "../layout/NoDataComponent"
+import { HttpMessageService } from "../../service/http-message.service"
+import { FullMessageModel } from "../../interface-contract/message/full-message-model"
+import { ActiveVideoCall } from "../video/ActiveVideoCall"
+
+export const WebSocketChatComponent: React.FunctionComponent<{ groupUrl?: string }> = ({ groupUrl }) => {
+  const { dispatch } = useContext(AlertContext)!
+  const { messages, setMessages, setAllMessagesFetched } = useContext(WebSocketContext)!
+  const [isActiveCall, setActiveCall] = useState<boolean>(false)
+
+  const [groupName, setGroupName] = React.useState<string>("")
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (groupUrl) {
+        try {
+          const http = new HttpMessageService()
+          const { data } = await http.getMessages(groupUrl, -1)
+          setMessages(data.messages)
+          setAllMessagesFetched(data.lastMessage)
+          setGroupName(data.groupName)
+          setActiveCall(data.activeCall)
+        } catch (error) {
+          dispatch({
+            type: AlertAction.ADD_ALERT,
+            payload: {
+              id: crypto.randomUUID(),
+              text: `Cannot fetch messages : ${error}`,
+              alert: "error",
+              isOpen: true
+            }
+          })
+        }
+      }
+    }
+    fetchMessages()
+  }, [groupUrl])
+
+  function updateMessages(messagesToAdd: FullMessageModel[]) {
+    setMessages([...messagesToAdd, ...messages])
+  }
+
+  return (
+    <>
+      {
+        !groupUrl ?
+          <div style={{
+            display: "flex",
+            width: "56%",
+            flexDirection: "column",
+          }}>
+            <NoDataComponent />
+          </div>
+          : groupName &&
+          <div style={{
+            backgroundColor: "#f6f8fc",
+            display: "flex",
+            width: "56%",
+            flexDirection: "column",
+          }}>
+            <div style={{
+              backgroundColor: "white",
+              borderRadius: "20px 20px 0 0",
+              width: "100%",
+              borderBottom: "1px solid #d5d5d5"
+            }}>
+              <Box p={1} display={"flex"} justifyContent={"space-between"}>
+                <Box display={"flex"} flexDirection={"column"} justifyContent={"center"}>
+                  <div style={{
+                    fontSize: "20px",
+                    fontWeight: "bold"
+                  }}>{groupName}</div>
+                </Box>
+                <ActiveVideoCall isAnyCallActive={isActiveCall} />
+              </Box>
+            </div>
+            <div
+              // onScroll={(event) => handleScroll(event)}
+              style={{
+                backgroundColor: "white",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+              }}>
+
+              <DisplayMessagesComponent updateMessages={updateMessages} groupUrl={groupUrl}
+                messages={messages} />
+              <CreateMessageComponent groupUrl={groupUrl} />
+            </div>
+          </div>
+      }
+    </>
+  )
+}

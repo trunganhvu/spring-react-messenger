@@ -1,0 +1,12 @@
+.main-register-form {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1250px) {
+    /*.main-register-form {*/
+    /*    margin-left: 20%;*/
+    /*    margin-right: 20%;*/
+    /*}*/
+}

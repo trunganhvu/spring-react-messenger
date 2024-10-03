@@ -1,0 +1,13 @@
+.MuiOutlinedInput-notchedOutline {
+    border: 0.1px solid rgb(246 248 252) !important;
+}
+.OutlinedInputApp {
+    width: 50%;
+    background-color: #ffffff;
+    padding-right: 0;
+    border: 0.1px solid rgb(246 248 252)
+}
+.OutlinedInputApp:hover {
+    border: 0.1px solid rgb(242 242 242) !important;
+    background-color: rgb(242 242 242) !important;
+}

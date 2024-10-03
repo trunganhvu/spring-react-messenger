@@ -1,0 +1,18 @@
+.sidebar {
+    width: 22%;
+    background-color: #f6f8fc;
+}
+
+.light-t {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.dark-t {
+    color: rgba(255, 255, 255, 0.54);
+}
+
+@media (max-width: 1250px) {
+    .sidebar {
+        width: 200px;
+    }
+}
