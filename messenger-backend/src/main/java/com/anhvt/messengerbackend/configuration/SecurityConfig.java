@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth").permitAll()
                         .requestMatchers("/users/register").permitAll()
                         .requestMatchers("/health-check").permitAll()
+                        .requestMatchers("/myhandler").permitAll()
                         .anyRequest().authenticated())
                 .logout(AbstractHttpConfigurer::disable)
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->

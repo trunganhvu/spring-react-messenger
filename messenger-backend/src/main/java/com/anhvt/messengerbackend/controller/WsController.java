@@ -68,6 +68,7 @@ public class WsController {
     @MessageMapping("/message")
     public void mainChannel(InputTransportDTO dto) {
         TransportActionEnum action = dto.getAction();
+        log.info("Action {}", action);
         switch (action) {
             case SEND_GROUP_MESSAGE:
                 this.getAndSaveMessage(dto.getUserId(), dto.getGroupUrl(), dto.getMessage(), dto.getMessageType());
@@ -134,6 +135,7 @@ public class WsController {
      * @param message  the payload received
      */
     public void getAndSaveMessage(int userId, String groupUrl, String message, MessageTypeEnum messageType) {
+        log.info("Receive message user {}", userId);
         int groupId = groupService.findGroupIdByUrl(groupUrl);
         if (groupUserJoinService.checkIfUserIsAuthorizedInGroup(userId, groupId)) {
             return;
@@ -174,6 +176,7 @@ public class WsController {
         CreateGroupDTO createGroup = gson.fromJson(payload, CreateGroupDTO.class);
         Long id1 = createGroup.getId1();
         Long id2 = createGroup.getId2();
+        log.info("Create conversation: group1 - {} - group 2 - {}", id1, id2);
         groupService.createConversation(id1.intValue(), id2.intValue());
     }
 }

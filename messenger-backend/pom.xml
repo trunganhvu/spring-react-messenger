@@ -98,6 +98,14 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.activemq/artemis-core-client -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-core-client</artifactId>
+            <version>2.37.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

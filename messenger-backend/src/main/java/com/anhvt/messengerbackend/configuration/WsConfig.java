@@ -4,10 +4,15 @@
  */
 package com.anhvt.messengerbackend.configuration;
 
+import com.anhvt.messengerbackend.controller.TestWebsocketHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 /**
@@ -18,7 +23,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  */
 @Configuration
 @EnableWebSocketMessageBroker
-public class WsConfig implements WebSocketMessageBrokerConfigurer {
+public class WsConfig implements WebSocketMessageBrokerConfigurer { //, WebSocketConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -32,5 +37,15 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins("http://localhost:3000")
                 .withSockJS();
     }
+
+//    @Override
+//    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
+//        webSocketHandlerRegistry.addHandler(myHandler(), "/myhandler");
+//    }
+//
+//    @Bean
+//    public WebSocketHandler myHandler() {
+//        return new TestWebsocketHandler();
+//    }
 }
 
